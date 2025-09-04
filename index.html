@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gulla Burguer | Hambúrguer artesanal em Rondonópolis - Delivery</title>
+  <meta name="description" content="Hambúrguer artesanal em Rondonópolis - MT. Combos, porções, bebidas e delivery rápido. Peça pelo WhatsApp.">
+  <meta name="keywords" content="hamburguer, hamburgueria, delivery, rondonópolis, batata frita, combo, porções, gulla burguer">
+  <style>
+    :root{
+      --bg:#0b0b0f;
+      --card:#171821;
+      --muted:#9ca3af;
+      --accent:#ffcf2e;
+      --brand:#e11d48;
+      --txt:#f8fafc;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif}
+    a{color:inherit}
+    header.hero{
+      background: radial-gradient(80% 80% at 70% 0%, #1f2436 0%, #10131c 60%, #0b0b0f 100%);
+      padding: 32px 16px 24px;
+      position:sticky; top:0; z-index:100;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .wrap{max-width:1080px;margin:0 auto;padding:0 12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:44px;height:44px;border-radius:12px;background:#111826;display:flex;align-items:center;justify-content:center;font-weight:900;border:2px solid #2a2f43}
+    .brand h1{margin:0;font-size:22px;letter-spacing:.3px}
+    .meta{display:flex;flex-wrap:wrap;gap:10px;color:var(--muted);font-size:14px;margin-top:6px}
+    .meta span{background:rgba(255,255,255,.06);padding:6px 10px;border-radius:999px}
+    nav.tabs{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap}
+    nav.tabs a{background:#1c1e29;color:#fff;padding:10px 14px;border-radius:999px;text-decoration:none;border:1px solid rgba(255,255,255,.08);font-weight:700}
+    nav.tabs a:hover{background:#222538}
+    section{padding:22px 0}
+    h2{margin:10px 0 14px 0;font-size:22px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+    .item{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px}
+    .title{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .title .price{font-weight:900;background:#0f1117;border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:6px 10px}
+    footer{border-top:1px solid rgba(255,255,255,.06);padding:18px 0 28px;color:var(--muted)}
+
+    /* Carrinho */
+    #cart-fab{
+      position: fixed; bottom:20px; right:20px; background:#111827; color:#fff;
+      padding: 12px 16px; border-radius:999px; font-weight:800; box-shadow:0 10px 30px rgba(0,0,0,.35);
+      cursor:pointer; z-index:1200; display:flex; align-items:center; gap:8px; user-select:none;
+    }
+    #cart-modal.hidden{display:none}
+    #cart-modal{position:fixed; inset:0; z-index:1300}
+    .cart-overlay{position:absolute; inset:0; background:rgba(0,0,0,.5)}
+    .cart-dialog{position:absolute; right:0; top:0; height:100%; width:min(520px,100%); background:#fff; color:#111; padding:16px;
+      box-shadow:-12px 0 30px rgba(0,0,0,.35); display:flex; flex-direction:column; gap:12px; animation:slideIn .22s ease-out}
+    @keyframes slideIn{from{transform:translateX(100%)} to{transform:translateX(0)}}
+    .cart-header{display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #eee; padding-bottom:8px}
+    .cart-header h3{margin:0}
+    #cart-close{background:#f3f4f6;border:none;border-radius:8px;padding:6px 10px;cursor:pointer;font-weight:700}
+    #cart-items{flex:1; overflow:auto; display:flex; flex-direction:column; gap:10px}
+    .cart-item{display:grid; grid-template-columns: 1fr auto; gap:8px; border:1px solid #eee; border-radius:12px; padding:10px 12px; align-items:center}
+    .ci-name{font-weight:700}
+    .ci-controls{display:flex; align-items:center; gap:6px}
+    .ci-controls button{background:#f3f4f6;border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700}
+    .ci-price{font-weight:800; min-width:100px; text-align:right}
+    .cart-summary{border-top:1px solid #eee; padding-top:10px; display:flex; justify-content:space-between; align-items:center}
+    .cart-form{display:grid; gap:10px}
+    .cart-form input, .cart-form textarea, .cart-form select {width:100%; padding:10px 12px; border:1px solid #e5e7eb; border-radius:10px; outline:none}
+    .cart-actions{display:flex; justify-content:space-between; gap:10px; margin-top:6px}
+    .btn-primary{background:#25D366; color:#fff; border:none; padding:12px 16px; border-radius:10px; font-weight:800; cursor:pointer}
+    .btn-outline{background:#fff; color:#111827; border:1px solid #e5e7eb; padding:12px 16px; border-radius:10px; font-weight:700; cursor:pointer}
+    .add-btn{margin-top:8px; display:inline-block; background:#111827; color:#fff; border:none; padding:8px 12px; border-radius:10px; font-weight:700; cursor:pointer}
+    .add-btn:hover{opacity:.95}
+
+    .muted{color:var(--muted); font-size:13px}
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="brand">
+        <div class="logo">GB</div>
+        <div>
+          <h1>Gulla Burguer</h1>
+          <div class="meta">
+            <span>Rua Francisco de Assis, Vila Operária — Rondonópolis/MT</span>
+            <span>WhatsApp: (66) 99240-0076</span>
+            <span>Instagram: @GULLA_BURGUER</span>
+          </div>
+        </div>
+      </div>
+      <nav class="tabs">
+        <a href="#hamburgueres">🍔 Hambúrgueres</a>
+        <a href="#porcoes">🍟 Porções</a>
+        <a href="#bebidas">🥤 Bebidas</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap" id="cardapio">
+    <!-- Hambúrgueres -->
+    <section id="hamburgueres">
+      <h2>Hambúrgueres</h2>
+      <div class="grid">
+        <div class="item">
+          <div class="title">
+            <span>Bacon Cheeseburguer</span>
+            <span class="price">R$ 29,90</span>
+          </div>
+          <div class="muted">Pão de gergelim, hambúrguer 100g, cheddar, cebola roxa, molho da casa, picles, alface, tomate e cebola caramelizada.</div>
+        </div>
+        <div class="item">
+          <div class="title">
+            <span>Clássico da Casa</span>
+            <span class="price">R$ 23,90</span>
+          </div>
+          <div class="muted">Pão de gergelim, hambúrguer 150g, muçarela, tomate, alface e maionese da casa.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Porções -->
+    <section id="porcoes">
+      <h2>Porções</h2>
+      <div class="grid">
+        <div class="item"><div class="title"><span>Anel de Cebola (6 unid.)</span><span class="price">R$ 8,90</span></div></div>
+        <div class="item"><div class="title"><span>Nuggets Fritos (6 unid.)</span><span class="price">R$ 11,90</span></div></div>
+        <div class="item"><div class="title"><span>Batata Frita 250g</span><span class="price">R$ 12,90</span></div></div>
+        <div class="item"><div class="title"><span>Anel de Cebola (10 unid.)</span><span class="price">R$ 13,90</span></div></div>
+        <div class="item"><div class="title"><span>Batata Frita com Cheddar e Bacon 250g</span><span class="price">R$ 18,90</span></div></div>
+        <div class="item"><div class="title"><span>Nuggets Fritos (10 unid.)</span><span class="price">R$ 19,90</span></div></div>
+        <div class="item"><div class="title"><span>Batata Frita 500g</span><span class="price">R$ 24,90</span></div></div>
+        <div class="item"><div class="title"><span>Batata Frita com Cheddar e Bacon 500g</span><span class="price">R$ 34,90</span></div></div>
+      </div>
+    </section>
+
+    <!-- Bebidas -->
+    <section id="bebidas">
+      <h2>Bebidas</h2>
+      <div class="grid">
+        <div class="item"><div class="title"><span>Água natural sem gás 500 ml</span><span class="price">R$ 4,00</span></div></div>
+        <div class="item"><div class="title"><span>Água com gás 500 ml</span><span class="price">R$ 5,00</span></div></div>
+        <div class="item"><div class="title"><span>Fanta lata 269 ml</span><span class="price">R$ 6,00</span></div></div>
+        <div class="item"><div class="title"><span>Coca-Cola Original lata 269 ml</span><span class="price">R$ 7,00</span></div></div>
+        <div class="item"><div class="title"><span>Coca-Cola Zero lata 269 ml</span><span class="price">R$ 7,00</span></div></div>
+        <div class="item"><div class="title"><span>Suco Polpa Norte</span><span class="price">R$ 12,00</span></div></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    © <span id="y"></span> Gulla Burguer — Rondonópolis/MT · Rua Francisco de Assis, Vila Operária · WhatsApp (66) 99240-0076 · Instagram @GULLA_BURGUER
+  </footer>
+
+  <!-- Carrinho flutuante + Modal -->
+  <div id="cart-fab" aria-label="Abrir carrinho">
+    🛒 <span id="cart-count">0</span> • R$ <span id="cart-total">0,00</span>
+  </div>
+
+  <div id="cart-modal" class="hidden">
+    <div class="cart-dialog">
+      <div class="cart-header">
+        <h3>Seu pedido</h3>
+        <button id="cart-close" aria-label="Fechar">✕</button>
+      </div>
+      <div id="cart-items"></div>
+
+      <div class="cart-summary">
+        <div><strong>Total:</strong> R$ <span id="cart-total-big">0,00</span></div>
+      </div>
+
+      <div class="cart-form">
+        <label>Nome
+          <input type="text" id="cli-nome" placeholder="Seu nome" />
+        </label>
+        <label>Endereço de entrega
+          <textarea id="cli-endereco" rows="2" placeholder="Rua, número, bairro, ponto de referência"></textarea>
+        </label>
+        <label>Forma de pagamento
+          <select id="cli-pagamento">
+            <option value="Pix">Pix</option>
+            <option value="Cartão">Cartão</option>
+            <option value="Dinheiro">Dinheiro</option>
+          </select>
+        </label>
+        <label>Observações
+          <textarea id="cli-obs" rows="2" placeholder="Ex.: tirar cebola, troco para 50, sem gelo..."></textarea>
+        </label>
+      </div>
+
+      <div class="cart-actions">
+        <button id="cart-clear" class="btn-outline">Limpar cesta</button>
+        <button id="cart-checkout" class="btn-primary">Finalizar no WhatsApp</button>
+      </div>
+    </div>
+    <div class="cart-overlay" id="cart-overlay"></div>
+  </div>
+
+  <script>
+    document.getElementById('y').textContent = new Date().getFullYear();
+
+    (function(){
+      const phone = "5566992400076";
+
+      function parseBRL(txt){
+        if(!txt) return 0;
+        return parseFloat(txt.replace(/[^0-9,]/g,'').replace(',', '.')) || 0;
+      }
+      function toBRL(n){
+        return n.toLocaleString('pt-BR',{minimumFractionDigits:2, maximumFractionDigits:2});
+      }
+
+      // inserir botões "Adicionar à cesta" em cada item
+      document.querySelectorAll('#cardapio .item').forEach(item => {
+        const nameEl = item.querySelector('.title span:first-child');
+        const priceEl = item.querySelector('.title .price');
+        if(!nameEl || !priceEl) return;
+        const name = nameEl.textContent.trim();
+        const price = parseBRL(priceEl.textContent);
+        if(item.querySelector('.add-btn')) return;
+        const btn = document.createElement('button');
+        btn.className = 'add-btn';
+        btn.textContent = 'Adicionar à cesta';
+        btn.addEventListener('click', () => addToCart(name, price));
+        item.appendChild(btn);
+      });
+
+      // Estado do carrinho
+      let cart = []; // [{name, price, qty}]
+
+      function addToCart(name, price){
+        const found = cart.find(it => it.name === name);
+        if(found){ found.qty += 1; }
+        else{ cart.push({name, price, qty:1}); }
+        renderCartBadge();
+      }
+      function removeFromCart(name){
+        cart = cart.filter(it => it.name !== name);
+        renderCart();
+        renderCartBadge();
+      }
+      function changeQty(name, delta){
+        const it = cart.find(i => i.name === name);
+        if(!it) return;
+        it.qty += delta;
+        if(it.qty <= 0) removeFromCart(name);
+        renderCart();
+        renderCartBadge();
+      }
+      function cartCount(){ return cart.reduce((s,i)=>s+i.qty,0); }
+      function cartTotal(){ return cart.reduce((s,i)=>s+i.price*i.qty,0); }
+
+      // FAB + Modal
+      const fab = document.getElementById('cart-fab');
+      const modal = document.getElementById('cart-modal');
+      const overlay = document.getElementById('cart-overlay');
+      const closeBtn = document.getElementById('cart-close');
+      const clearBtn = document.getElementById('cart-clear');
+      const checkoutBtn = document.getElementById('cart-checkout');
+
+      fab.addEventListener('click', () => { modal.classList.remove('hidden'); renderCart(); });
+      overlay.addEventListener('click', () => modal.classList.add('hidden'));
+      closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+      clearBtn.addEventListener('click', () => { cart = []; renderCart(); renderCartBadge(); });
+
+      function renderCartBadge(){
+        document.getElementById('cart-count').textContent = cartCount();
+        document.getElementById('cart-total').textContent = toBRL(cartTotal());
+      }
+      function renderCart(){
+        const list = document.getElementById('cart-items');
+        list.innerHTML = '';
+        cart.forEach(it => {
+          const row = document.createElement('div');
+          row.className = 'cart-item';
+          row.innerHTML = `
+            <div class="ci-name">${it.name} <small>x${it.qty}</small></div>
+            <div class="ci-controls">
+              <button aria-label="Diminuir" data-d="-1">−</button>
+              <button aria-label="Aumentar" data-d="+1">+</button>
+              <button aria-label="Remover" data-d="rm">remover</button>
+            </div>
+            <div class="ci-price">R$ ${toBRL(it.price * it.qty)}</div>
+          `;
+          row.querySelectorAll('button').forEach(b=>{
+            b.addEventListener('click', () => {
+              const d = b.getAttribute('data-d');
+              if(d === 'rm') removeFromCart(it.name);
+              else changeQty(it.name, d === '+1' ? 1 : -1);
+            });
+          });
+          list.appendChild(row);
+        });
+        document.getElementById('cart-total-big').textContent = toBRL(cartTotal());
+      }
+
+      checkoutBtn.addEventListener('click', () => {
+        if(cart.length === 0){ alert('Sua cesta está vazia. Adicione itens para continuar.'); return; }
+        const nome = (document.getElementById('cli-nome').value || '').trim();
+        const endereco = (document.getElementById('cli-endereco').value || '').trim();
+        const pagamento = document.getElementById('cli-pagamento').value;
+        const obs = (document.getElementById('cli-obs').value || '').trim();
+
+        let msg = "Olá, quero fazer meu pedido:%0A%0AItens:%0A";
+        cart.forEach(it => {
+          msg += `- ${it.qty}x ${it.name} (R$ ${toBRL(it.price)})%0A`;
+        });
+        msg += `%0ATotal: R$ ${toBRL(cartTotal())}%0A%0A`;
+        if(nome) msg += `Nome: ${nome}%0A`;
+        if(endereco) msg += `Endereço: ${endereco}%0A`;
+        msg += `Forma de pagamento: ${pagamento}%0A`;
+        if(obs) msg += `Observações: ${obs}%0A`;
+
+        const url = `https://wa.me/${phone}?text=${msg}`;
+        window.open(url, '_blank');
+      });
+
+      renderCartBadge();
+    })();
+  </script>
+</body>
+</html>
